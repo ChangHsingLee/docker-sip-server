@@ -15,7 +15,7 @@ The example for setup SIP server in docker container
 > <https://hub.docker.com/r/mlan/asterisk>
 
 ## GitHub (source)
-> <https://github.com/mlan/docker-asterisk>
+> <https://github.com/mlan/docker-asterisk>\
 > <https://github.com/asterisk/asterisk>
 
 ## Installation
