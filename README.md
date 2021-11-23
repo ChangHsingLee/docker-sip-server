@@ -27,14 +27,14 @@ if you want to know what's difference between these images, you can check [sourc
     - docker pull mlan/asterisk:mini (tiny size,   ~42.1MB)
 
 	OR<br>
-	You can load the docker image "[mlan-asterisk-mini-dockerImg.tar.bz2](https://github.com/ChangHsingLee/backup-dockerImg/blob/main/mlan-asterisk-mini-dockerImg.tar.bz2)" which be saved/tested.
+	You can load the docker image "[mlan-asterisk-mini-dockerImg.tar.xz](https://drive.google.com/file/d/1LvoxdK5PlHGSav5NEiMA8F5UakCSZv_H/view?usp=sharing)" which be saved/tested.
     ```shell
-    bzip2 -dcv mlan-asterisk-mini-dockerImg.tar.bz2 | docker load
+    xz -dcv mlan-asterisk-mini-dockerImg.tar.xz | docker load
     ```
 	The image is saved/compressed by below command
     ```shell
-	docker save mlan/asterisk:mini | bzip2 -9vz > mlan-asterisk-mini-dockerImg.tar.bz2
-	```
+    docker save mlan/asterisk:mini | xz -vz > mlan-asterisk-mini-dockerImg.tar.xz
+    ```
 2. Prepare docker volume to store [configuration files, logs and others](https://github.com/ChangHsingLee/docker-sip-server/srv).
 	```shell
 	VOLUME_TOPDIR=$HOME/workspace/dockerVolumes/asterisk; \
