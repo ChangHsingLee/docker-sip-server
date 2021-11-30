@@ -79,7 +79,7 @@ Extension No: 1002
 	logger show channels
 
 - reload the PJSIP module to pick up the changes\
-	pjsip reload
+	module reload
 
 - reload the dialplan module to pick up the changes\
 	dialplan reload
