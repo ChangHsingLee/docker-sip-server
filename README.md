@@ -2,10 +2,11 @@
 The example for setup SIP server in docker container
 
 ## Initial Date
-	2021/10/20
+	2022/07/07
 
 ## Version
-	Alpine Linux: 3.14 
+	Alpine Linux: 3.15.4
+	mlan/docker-asterisk: 1.0.0
 	Asterisk: 18.2.2
 
 ## Documentation
@@ -15,16 +16,20 @@ The example for setup SIP server in docker container
 > <https://hub.docker.com/r/mlan/asterisk>
 
 ## GitHub (source)
-> <https://github.com/mlan/docker-asterisk>\
+> <https://github.com/mlan/docker-asterisk/tree/v1.0.0>\
 > <https://github.com/asterisk/asterisk>
 
 ## Installation
 1. You can install recent version of Asterisk from docker store, there are four types of docker images,\
-if you want to know what's difference between these images, you can check [source code](https://github.com/mlan/docker-asterisk/blob/master/Dockerfile).
-    - docker pull mlan/asterisk:xtra (large size,  ~132MB)
-    - docker pull mlan/asterisk:full (medium size, ~76.1MB)
-    - docker pull mlan/asterisk:base (small size,  ~56.9MB)
-    - docker pull mlan/asterisk:mini (tiny size,   ~42.1MB)
+if you want to know what's difference between these images, you can check [source code](https://github.com/mlan/docker-asterisk/blob/v1.0.0/Dockerfile).
+    - docker pull mlan/asterisk:xtra-1.0.0 (large size,  ~224MB)<br>
+		includes all Asterisk packages
+    - docker pull mlan/asterisk:full-1.0.0 (medium size, ~73.3MB)<br>
+		adds support for console audio
+    - docker pull mlan/asterisk:base-1.0.0 (small size,  ~53.8MB)<br>
+		include support for TLS, logging, WebSMS and AutoBan
+    - docker pull mlan/asterisk:mini-1.0.0 (tiny size,   ~39MB)<br>
+		only contains Asterisk itself
 
 	OR<br>
 	You can load the docker image "[mlan-asterisk-mini-dockerImg.tar.xz](https://drive.google.com/file/d/1LvoxdK5PlHGSav5NEiMA8F5UakCSZv_H/view?usp=sharing)" which be saved/tested.
@@ -55,11 +60,17 @@ Extension No: 1002
 3. Use UDP protocol
 
 ## Start Container
-	VOLUME_TOPDIR=$HOME/workspace/dockerVolumes/asterisk; \
-    ASTERISK_IMG_TYPE=mini; \
+	VOLUME_TOPDIR=/home/dockerContainer/sip-server; \
+    ASTERISK_IMG_TYPE=mini-1.0.0; \
     CONTAINER_NAME=sip-server; \
     HOST_NAME=AsterikSIPserver; \
-    docker run -d --restart always -p 5060:5060/udp -p 5060:5060 -p 5061:5061 -p 10000-10099:10000-10099/udp -p 8080:80 --cap-add SYS_PTRACE --cap-add=NET_ADMIN --cap-add=NET_RAW --name $CONTAINER_NAME -h $HOST_NAME -e SYSLOG_LEVEL=8 -v $VOLUME_TOPDIR/srv:/srv -v /etc/localtime:/etc/localtime:ro mlan/asterisk:$ASTERISK_IMG_TYPE
+    docker run -d --restart always -p 5060:5060/udp \
+	-p 5060:5060 -p 5061:5061 -p 10000-10099:10000-10099/udp \
+	--cap-add SYS_PTRACE --cap-add=NET_ADMIN --cap-add=NET_RAW \
+	--name $CONTAINER_NAME -h $HOST_NAME -e SYSLOG_LEVEL=8 \
+	-v $VOLUME_TOPDIR/srv:/srv \
+	-v /etc/localtime:/etc/localtime:ro -v /etc/timezone:/etc/timezone:ro \
+	mlan/asterisk:$ASTERISK_IMG_TYPE
 
 ## Start Asterisk CLI
 	CONTAINER_NAME=sip-server; \
@@ -97,4 +108,3 @@ If you have more then one NIC card, suggest you don't select 'auto' for option '
 ## Note
 Asterisk 11 and previous: chan_sip is the primary option.\
 Asterisk 12 and beyond: You'll probably want to use chan_pjsip (the newest driver), but you still have the option of using chan_sip as well
-
